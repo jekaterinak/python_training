@@ -3,16 +3,16 @@ class GroupHelper:
     def __init__(self, app):
         self.app = app
 
+    def change_field_value(self, field_name, text):
+        if text is not None:
+            self.app.wd.find_element_by_name(field_name).click()
+            self.app.wd.find_element_by_name(field_name).clear()
+            self.app.wd.find_element_by_name(field_name).send_keys(text)
+
     def fill_group_data(self, group):
-        self.app.wd.find_element_by_name("group_name").click()
-        self.app.wd.find_element_by_name("group_name").clear()
-        self.app.wd.find_element_by_name("group_name").send_keys(group.name)
-        self.app.wd.find_element_by_name("group_header").click()
-        self.app.wd.find_element_by_name("group_header").clear()
-        self.app.wd.find_element_by_name("group_header").send_keys(group.header)
-        self.app.wd.find_element_by_name("group_footer").click()
-        self.app.wd.find_element_by_name("group_footer").clear()
-        self.app.wd.find_element_by_name("group_footer").send_keys(group.footer)
+        self.change_field_value("group_name", group.name)
+        self.change_field_value("group_header", group.header)
+        self.change_field_value("group_footer", group.footer)
 
     def open_groups_page(self):
         self.app.wd.find_element_by_link_text("groups").click()
@@ -30,19 +30,21 @@ class GroupHelper:
     def delete_first_group(self):
         self.open_groups_page()
         # select first group
-        self.app.wd.find_element_by_name("selected[]").click()
+        self.select_first_group()
         # submit deletion
         self.app.wd.find_element_by_name("delete").click()
         self.return_to_groups_page()
 
+    def select_first_group(self):
+        self.app.wd.find_element_by_name("selected[]").click()
+
     def edit_first_group(self, group):
         self.open_groups_page()
-        # select first group
-        self.app.wd.find_element_by_name("selected[]").click()
-        # submit editing
+        self.select_first_group()
+        # click edit group button
         self.app.wd.find_element_by_name("edit").click()
-        # fill group form
         self.fill_group_data(group)
+        # click update button
         self.app.wd.find_element_by_name("update").click()
         self.return_to_groups_page()
 
