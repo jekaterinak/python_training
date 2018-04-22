@@ -67,3 +67,6 @@ class ContactHelper:
         self.fill_contact_data(contact)
         # click update button
         self.app.wd.find_element_by_name("update").click()
+
+    def count(self):
+        return len(self.app.wd.find_elements_by_name("selected[]"))
