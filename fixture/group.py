@@ -15,7 +15,8 @@ class GroupHelper:
         self.change_field_value("group_footer", group.footer)
 
     def open_groups_page(self):
-        self.app.wd.find_element_by_link_text("groups").click()
+        if not (self.app.wd.current_url.endswith("/group.php") and len(self.app.wd.find_elements_by_name("new")) > 0):
+            self.app.wd.find_element_by_link_text("groups").click()
 
     def create(self, group):
         self.open_groups_page()

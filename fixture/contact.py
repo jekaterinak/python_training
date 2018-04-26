@@ -33,6 +33,7 @@ class ContactHelper:
         self.app.wd.find_element_by_xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img").click()
 
     def delete_first_contact_via_main_view(self):
+        self.app.open_home_page()
         # select first contact
         self.app.wd.find_element_by_name("selected[]").click()
         # click delete button
@@ -41,6 +42,7 @@ class ContactHelper:
         self.app.wd.switch_to.alert.accept()
 
     def delete_first_contact_via_edit_view(self):
+        self.app.open_home_page()
         # select first contact
         self.app.wd.find_element_by_name("selected[]").click()
         self.open_edit_view()
@@ -48,6 +50,7 @@ class ContactHelper:
         self.app.wd.find_element_by_xpath("//div[@id='content']/form[2]/input[2]").click()
 
     def edit_first_contact_via_main_view(self, contact):
+        self.app.open_home_page()
         # select first contact
         self.app.wd.find_element_by_name("selected[]").click()
         # click edit contact icon
@@ -58,6 +61,7 @@ class ContactHelper:
         self.app.wd.find_element_by_name("update").click()
 
     def edit_first_contact_via_details_view(self, contact):
+        self.app.open_home_page()
         # select first contact
         self.app.wd.find_element_by_name("selected[]").click()
         # click details icon
