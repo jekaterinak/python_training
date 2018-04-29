@@ -20,7 +20,8 @@ class Application:
             return False
 
     def open_home_page(self):
-        if not (self.wd.current_url.endswith("/addressbook/")):
+        if not (self.wd.current_url.endswith("/addressbook/") and len(
+                self.wd.find_elements_by_id("search-az")) > 0):
             self.wd.get("http://localhost/addressbook/")
 
     def destroy(self):
