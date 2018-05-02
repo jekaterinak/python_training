@@ -36,29 +36,41 @@ class ContactHelper:
     def open_edit_view(self):
         self.app.wd.find_element_by_xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img").click()
 
-    def delete_first_contact_via_main_view(self):
-        self.app.open_home_page()
-        # select first contact
+    def select_first_contact(self):
         self.app.wd.find_element_by_name("selected[]").click()
+
+    def select_contact_by_index(self, index):
+        self.app.wd.find_elements_by_name("selected[]")[index].click()
+
+    def delete_first_contact_by_index_via_main_view(self):
+        self.delete_contact_by_index_via_main_view(0)
+
+    def delete_contact_by_index_via_main_view(self, index):
+        self.app.open_home_page()
+        self.select_contact_by_index(index)
         # click delete button
         self.app.wd.find_element_by_xpath("//div[@id='content']/form[2]/div[2]/input").click()
         # accept contact deletion
         self.app.wd.switch_to.alert.accept()
         self.contact_cache = None
 
-    def delete_first_contact_via_edit_view(self):
+    def delete_first_contact_by_index_via_edit_view(self):
+        self.delete_contact_by_index_via_edit_view(0)
+
+    def delete_contact_by_index_via_edit_view(self, index):
         self.app.open_home_page()
-        # select first contact
-        self.app.wd.find_element_by_name("selected[]").click()
+        self.select_contact_by_index(index)
         self.open_edit_view()
         # click delete button
         self.app.wd.find_element_by_xpath("//div[@id='content']/form[2]/input[2]").click()
         self.contact_cache = None
 
-    def edit_first_contact_via_main_view(self, contact):
+    def edit_first_contact_by_index_via_main_view(self):
+        self.edit_contact_by_index_via_main_view(0)
+
+    def edit_contact_by_index_via_main_view(self, index, contact):
         self.app.open_home_page()
-        # select first contact
-        self.app.wd.find_element_by_name("selected[]").click()
+        self.select_contact_by_index(index)
         # click edit contact icon
         self.open_edit_view()
         # fill contact form
@@ -67,10 +79,12 @@ class ContactHelper:
         self.app.wd.find_element_by_name("update").click()
         self.contact_cache = None
 
-    def edit_first_contact_via_details_view(self, contact):
+    def edit_first_contact_by_index_via_details_view(self):
+        self.edit_contact_by_index_via_details_view(0)
+
+    def edit_contact_by_index_via_details_view(self, index, contact):
         self.app.open_home_page()
-        # select first contact
-        self.app.wd.find_element_by_name("selected[]").click()
+        self.select_contact_by_index(index)
         # click details icon
         self.app.wd.find_element_by_xpath("//*[@id='maintable']/tbody/tr[2]/td[7]/a/img").click()
         # click modify button
