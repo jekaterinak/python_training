@@ -50,8 +50,8 @@ class GroupHelper:
     def select_group_by_index(self, index):
         self.app.wd.find_elements_by_name("selected[]")[index].click()
 
-    def edit_first_group(self):
-        self.edit_group_by_index(0)
+    def edit_first_group(self, group):
+        self.edit_group_by_index(0, group)
 
     def edit_group_by_index(self, index, group):
         self.open_groups_page()
