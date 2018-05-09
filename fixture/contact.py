@@ -147,3 +147,15 @@ class ContactHelper:
         mobilephone = re.search("M: (.*)", text).group(1)
         workphone = re.search("W: (.*)", text).group(1)
         return Contact(homephone=homephone, workphone=workphone, mobilephone=mobilephone)
+
+    def merge_phones_like_on_home_page(self, contact):
+        return "\n".join(filter(lambda x: x != "",
+                                map(lambda x: self.app.clear_phones(x),
+                                    filter(lambda x: x is not None,
+                                           [contact.homephone, contact.mobilephone, contact.workphone]))))
+
+    def merge_emails_like_on_home_page(self, contact):
+        return "\n".join(
+            map(lambda x: self.app.remove_spaces(x),
+                filter(lambda x: x is not None and x != "",
+                       [contact.email, contact.email2, contact.email3])))
