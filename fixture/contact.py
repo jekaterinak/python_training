@@ -40,8 +40,14 @@ class ContactHelper:
     def open_edit_view_by_index(self, index):
         self.app.wd.find_elements_by_xpath("//table[@id='maintable']/tbody/tr/td[8]/a/img")[index].click()
 
+    def open_edit_view_by_id(self, id):
+        self.app.wd.find_element_by_css_selector("a[href*='edit.php?id=%s']" % id).click()
+
     def open_details_view_by_index(self, index):
         self.app.wd.find_elements_by_xpath("//*[@id='maintable']/tbody/tr/td[7]/a/img")[index].click()
+
+    def open_details_view_by_id(self, id):
+        self.app.wd.find_element_by_css_selector("a[href*='view.php?id=%s']" % id).click()
 
     def select_first_contact(self):
         self.select_contact_by_index(0)
@@ -49,12 +55,24 @@ class ContactHelper:
     def select_contact_by_index(self, index):
         self.app.wd.find_elements_by_name("selected[]")[index].click()
 
+    def select_contact_by_id(self, id):
+        self.app.wd.find_element_by_css_selector("input[value='%s']" % id).click()
+
     def delete_first_contact_by_index_via_main_view(self):
         self.delete_contact_by_index_via_main_view(1)
 
     def delete_contact_by_index_via_main_view(self, index):
         self.app.open_home_page()
         self.select_contact_by_index(index)
+        # click delete button
+        self.app.wd.find_element_by_xpath("//div[@id='content']/form[2]/div[2]/input").click()
+        # accept contact deletion
+        self.app.wd.switch_to.alert.accept()
+        self.contact_cache = None
+
+    def delete_contact_by_id_via_main_view(self, id):
+        self.app.open_home_page()
+        self.select_contact_by_id(id)
         # click delete button
         self.app.wd.find_element_by_xpath("//div[@id='content']/form[2]/div[2]/input").click()
         # accept contact deletion
@@ -72,6 +90,14 @@ class ContactHelper:
         self.app.wd.find_element_by_xpath("//div[@id='content']/form[2]/input[2]").click()
         self.contact_cache = None
 
+    def delete_contact_by_id_via_edit_view(self, id):
+        self.app.open_home_page()
+        # click edit contact icon
+        self.open_edit_view_by_id(id)
+        # click delete button
+        self.app.wd.find_element_by_xpath("//div[@id='content']/form[2]/input[2]").click()
+        self.contact_cache = None
+
     def edit_first_contact_by_index_via_main_view(self, contact):
         self.edit_contact_by_index_via_main_view(1, contact)
 
@@ -85,6 +111,16 @@ class ContactHelper:
         self.app.wd.find_element_by_name("update").click()
         self.contact_cache = None
 
+    def edit_contact_by_id_via_main_view(self, contact):
+        self.app.open_home_page()
+        # click edit contact icon
+        self.open_edit_view_by_id(contact.id)
+        # fill contact form
+        self.fill_contact_data(contact)
+        # click update button
+        self.app.wd.find_element_by_name("update").click()
+        self.contact_cache = None
+
     def edit_first_contact_by_index_via_details_view(self, contact):
         self.edit_contact_by_index_via_details_view(1, contact)
 
@@ -92,6 +128,17 @@ class ContactHelper:
         self.app.open_home_page()
         # click details icon
         self.open_details_view_by_index(index)
+        # click modify button
+        self.app.wd.find_element_by_xpath("//*[@id='content']/form[1]/input[2]").click()
+        self.fill_contact_data(contact)
+        # click update button
+        self.app.wd.find_element_by_name("update").click()
+        self.contact_cache = None
+
+    def edit_contact_by_id_via_details_view(self, contact):
+        self.app.open_home_page()
+        # click details icon
+        self.open_details_view_by_id(contact.id)
         # click modify button
         self.app.wd.find_element_by_xpath("//*[@id='content']/form[1]/input[2]").click()
         self.fill_contact_data(contact)
@@ -159,3 +206,11 @@ class ContactHelper:
             map(lambda x: self.app.remove_spaces(x),
                 filter(lambda x: x is not None and x != "",
                        [contact.email, contact.email2, contact.email3])))
+
+    def contact_like_on_webpage(self, contact):
+        contact.firstname = self.app.remove_spaces(contact.firstname)
+        contact.lastname = self.app.remove_spaces(contact.lastname)
+        contact.address = self.app.remove_spaces(contact.address)
+        contact.all_phones_from_home_page = self.app.contact.merge_phones_like_on_home_page(contact)
+        contact.all_emails_from_home_page = self.app.contact.merge_emails_like_on_home_page(contact)
+        return contact
