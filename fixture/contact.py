@@ -1,5 +1,6 @@
 from model.contact import Contact
 import re
+from selenium.webdriver.support.ui import Select
 
 
 class ContactHelper:
@@ -214,3 +215,18 @@ class ContactHelper:
         contact.all_phones_from_home_page = self.app.contact.merge_phones_like_on_home_page(contact)
         contact.all_emails_from_home_page = self.app.contact.merge_emails_like_on_home_page(contact)
         return contact
+
+
+    def add_contact_to_group(self, contact, group):
+        self.app.open_home_page()
+        self.select_contact_by_id(contact.id)
+        select = Select(self.app.wd.find_element_by_name("to_group"))
+        select.select_by_value(group.id)
+        self.app.wd.find_element_by_name("add").click()
+
+    def delete_contact_from_group(self,contact,group):
+        self.app.open_home_page()
+        self.open_details_view_by_id(contact.id)
+        self.app.wd.find_element_by_css_selector("a[href*='index.php?group=%s']" % group.id).click()
+        self.select_contact_by_id(contact.id)
+        self.app.wd.find_element_by_name("remove").click()
