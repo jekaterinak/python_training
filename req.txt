@@ -6,7 +6,7 @@ pip
 pluggy
 pony
 py
-PyMySQL
+PyMySQL=0.7.9
 pytest
 selenium
 setuptools
