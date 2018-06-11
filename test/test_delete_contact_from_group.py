@@ -4,7 +4,7 @@ from generator import contact as f
 from generator import group as t
 
 
-def test_delete_contact_to_group(app, orm):
+def test_delete_contact_from_group(app, orm):
     contact_in_group = None
     group_for_removing_contact = None
     if len(orm.get_group_list()) == 0:

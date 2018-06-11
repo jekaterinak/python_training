@@ -13,3 +13,5 @@ setuptools
 six
 urwid
 wheel
+lxml-4.2.1-cp36-cp36m-win_amd64.whl
+allure-pytest
